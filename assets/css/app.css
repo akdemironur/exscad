@@ -1,0 +1,34 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* This file is for your main application CSS */
+
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f0f0f0; /* Set canvas background color */
+    z-index: -1; /* Place canvas behind other elements */
+}
+.codecontrols {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    width: 30%;
+    height: 90%;
+}
+textarea {
+    width: calc(100% - 12px); 
+    height: calc(100% - 50px); 
+    font-size: 16px;
+    background-color: #0e2954;
+    color: #84a7a1;
+}
+button {
+    color: white;
+    border-radius: 4px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
