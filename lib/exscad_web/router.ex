@@ -17,8 +17,7 @@ defmodule ExscadWeb.Router do
   scope "/", ExscadWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
-    live "/exscad", ExscadView
+    live "/", ExscadView
   end
 
   # Other scopes may use custom stacks.
