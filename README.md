@@ -1,18 +1,35 @@
 # Exscad
 
-To start your Phoenix server:
+Exscad is an OpenSCAD viewer written in Elixir using Phoenix LiveView and three.js.
 
-  * Run `mix setup` to install and setup dependencies
-  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+## Usage
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+Follow these steps to set up and run Exscad on your local machine:
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+1. Clone the project:
+`git clone https://github.com/akdemironur/exscad`
+`cd exscad`
 
-## Learn more
+2. Build the Docker image:
+`cd openscad`
+`docker build . --tag openscad`
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+3. Return to the project root directory:
+`cd ..`
+
+4. Set up the Elixir environment:
+`mix setup`
+
+5. Start the Phoenix server:
+`mix phx.server`
+
+Now you can open your web browser and visit [localhost:4000](http://localhost:4000) to use Exscad.
+
+## Known Issues
+
+- [ ] Text functions in OpenSCAD are not working because there is no font in the Docker image.
+- [ ] Invoking Docker from Elixir is possible but not recommended for production. Consider alternative solutions.
+- [ ] Updating the textarea may sometimes trigger three.js controls unexpectedly.
+- [ ] The initial camera position does not take into account the bounding box of the object.
+
+Feel free to contribute by addressing these issues or submitting new ones. 
