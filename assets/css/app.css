@@ -17,18 +17,9 @@ canvas {
     position: absolute;
     top: 5%;
     left: 5%;
-    width: 30%;
-    height: 90%;
 }
-textarea {
-    width: calc(100% - 12px); 
-    height: calc(100% - 50px); 
-    font-size: 16px;
-    background-color: #0e2954;
-    color: #84a7a1;
-}
+
 button {
     color: white;
-    border-radius: 4px;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }

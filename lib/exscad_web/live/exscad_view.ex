@@ -27,7 +27,14 @@ defmodule ExscadWeb.ExscadView do
     """
 
     {stldata, _} = System.cmd("docker", ["run", "--rm", "openscad", openscadcode])
-    {:ok, assign(socket, stldata: stldata, show: true, openscadcode: openscadcode)}
+
+    {:ok,
+     assign(socket,
+       stldata: stldata,
+       show: true,
+       openscadcode: openscadcode,
+       form: to_form(%{})
+     )}
   end
 
   def render(assigns) do
@@ -38,7 +45,19 @@ defmodule ExscadWeb.ExscadView do
       <%= if @show do %>
         <button phx-click="toggle">Hide Code</button>
         <br />
-        <textarea field={@openscadcode} id="openscadcode" style="font-family:Courier"><%= @openscadcode %></textarea>
+        <.form for={@form} phx-change="update_openscadcode">
+          <.input
+            type="textarea"
+            field={@form[:openscadcode]}
+            value={@openscadcode}
+            style="font-family: Courier;
+                   width: 600px; 
+                   height: 400px; 
+                   font-size: 16px;
+                   background-color: #0e2954;
+                   color: #84a7a1;"
+          />
+        </.form>
       <% else %>
         <button phx-click="toggle">Show Code</button>
         <br />
@@ -59,5 +78,9 @@ defmodule ExscadWeb.ExscadView do
   def handle_event("render", %{}, socket) do
     {stldata, _} = System.cmd("docker", ["run", "--rm", "openscad", socket.assigns.openscadcode])
     {:noreply, assign(socket, stldata: stldata)}
+  end
+
+  def handle_event("update_openscadcode", %{"_target" => ["openscadcode"], "openscadcode" => openscadcode}, socket) do
+    {:noreply, assign(socket, openscadcode: openscadcode)}
   end
 end

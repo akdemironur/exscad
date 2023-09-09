@@ -25,50 +25,58 @@ import * as THREE from "three"
 import { STLLoader } from "three/addons/loaders/STLLoader.js";
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
+function draw(state) {
+
+  let { canvas, camera, scene, controls, light, light2, renderer, material, loader, material_wf } = state;
+  let rawStl = canvas.dataset.stl;
+  while (scene.children.length > 0) {
+    scene.remove(scene.children[0]);
+  }
+  let loadedStl = new THREE.Mesh(loader.parse(rawStl), material)
+  loadedStl.position.set(0, 0, 0)
+  let geometry = new THREE.EdgesGeometry(loadedStl.geometry);
+  let wireframe = new THREE.LineSegments(geometry, material_wf);
+
+  scene.add(new THREE.AxesHelper(5))
+  scene.add(light)
+  scene.add(light2)
+  scene.add(loadedStl)
+  scene.add(wireframe)
+  camera.position.z = 5;
+  function animate() {
+
+    requestAnimationFrame(animate);
+
+    controls.update();
+    renderer.render(scene, camera);
+
+  }
+  animate();
+}
+
 let hooks = {
   canvas: {
     mounted() {
       let canvas = this.el;
-      let rawStl = canvas.dataset.stl;
-      let context = canvas.getContext("3d");
+      let camera = new THREE.PerspectiveCamera(10, window.innerWidth / window.innerHeight, 0.1, 1000);
       let scene = new THREE.Scene();
       scene.background = new THREE.Color(0x1f6e8c);
-      const light = new THREE.DirectionalLight(0xffffff)
+      let light = new THREE.DirectionalLight(0xffffff)
       light.position.set(-120, 120, -120)
-      const light2 = new THREE.DirectionalLight(0xffffff)
+      let light2 = new THREE.DirectionalLight(0xffffff)
       light2.position.set(120, -120, 120)
-      let camera = new THREE.PerspectiveCamera(10, window.innerWidth / window.innerHeight, 0.1, 1000);
       let renderer = new THREE.WebGLRenderer({ canvas: canvas });
       let controls = new OrbitControls(camera, renderer.domElement)
-      controls.enableDamping = true
+      // controls.enableDamping = true
       renderer.setSize(window.innerWidth, window.innerHeight);
       let material = new THREE.MeshPhongMaterial({ color: 0x84a7a1, specular: 0x111111, shininess: 200 })
-      const loader = new STLLoader()
-      let loadedStl = new THREE.Mesh(loader.parse(rawStl), material)
-      loadedStl.position.set(0, 0, 0)
-      let geometry = new THREE.EdgesGeometry(loadedStl.geometry);
+      let loader = new STLLoader()
       let material_wf = new THREE.LineBasicMaterial({ color: 0x000000 });
-      let wireframe = new THREE.LineSegments(geometry, material_wf);
-
-      scene.add(loadedStl)
-      scene.add(wireframe)
-      scene.add(new THREE.AxesHelper(5))
-      scene.add(light)
-      scene.add(light2)
-      camera.position.z = 5;
-      function animate() {
-
-        requestAnimationFrame(animate);
-
-        controls.update();
-        renderer.render(scene, camera);
-
-      }
-      animate();
-      // Object.assign(this, { canvas, context, scene, camera, renderer, loadedStl, material, controls });
+      Object.assign(this, { canvas, camera, scene, controls, light, light2, renderer, material, loader, material_wf });
+      draw(this)
     },
     updated() {
-      mounted();
+      draw(this)
     }
   }
 };
