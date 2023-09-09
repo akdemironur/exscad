@@ -76,11 +76,22 @@ defmodule ExscadWeb.ExscadView do
   end
 
   def handle_event("render", %{}, socket) do
-    {stldata, _} = System.cmd("docker", ["run", "--rm", "openscad", socket.assigns.openscadcode])
+    {stldata, _} =
+      System.cmd("docker", [
+        "run",
+        "--rm",
+        "openscad",
+        socket.assigns.openscadcode
+      ])
+
     {:noreply, assign(socket, stldata: stldata)}
   end
 
-  def handle_event("update_openscadcode", %{"_target" => ["openscadcode"], "openscadcode" => openscadcode}, socket) do
+  def handle_event(
+        "update_openscadcode",
+        %{"_target" => ["openscadcode"], "openscadcode" => openscadcode},
+        socket
+      ) do
     {:noreply, assign(socket, openscadcode: openscadcode)}
   end
 end
